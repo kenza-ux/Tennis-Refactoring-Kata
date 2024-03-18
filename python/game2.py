@@ -1,26 +1,22 @@
 # -*- coding: utf-8 -*-
-#correction avec les améliorations apportées kenza Merzouk, Mohammed Daoud, Ahmed Bouzidia, Adam Achabar
-from enum import Enum
-class TennisGame2:
+class Game2:
     def __init__(self, player1Name, player2Name):
         self.player1Name = player1Name
         self.player2Name = player2Name
         self.score_player1 = 0
         self.score_player2 = 0
 
+
     def won_point(self, playerName):
-        if playerName == "player1":
-            self.score_player1 +=1
-            
-        elif playerName == "player2":
-            self.score_player2 +=1
-          
+        if playerName not in [self.player1Name, self.player2Name]:
+            raise ValueError("Player name is not recognized")
+
+        if playerName == self.player1Name:
+            self.score_player1 += 1
         else:
-            print(" saisissez un nom de player correct")
+            self.score_player2 += 1
 
-    
     def score(self):
-
         if self.is_deuce():
             return "Deuce"
         if self.is_advantage():
@@ -30,13 +26,13 @@ class TennisGame2:
         return self.current_score()
 
     def is_deuce(self):
-        return self.score_player1 >= 3 and self.score_player1 == self.score_player2
+        return self.score_player1 > 2 and self.score_player1 == self.score_player2
 
     def is_advantage(self):
-        return self.score_player1 >= 4 or self.score_player2 >= 4 and abs(self.score_player1 - self.score_player2) == 1
+        return abs(self.score_player1 - self.score_player2) == 1 and max(self.score_player1, self.score_player2) > 3
 
     def is_win(self):
-        return self.score_player1 >= 4 or self.score_player2 >= 4 and abs(self.score_player1 - self.score_player2) >= 2
+        return abs(self.score_player1 - self.score_player2) >= 2 and max(self.score_player1, self.score_player2) > 3
 
     def advantage_player(self):
         return self.player1Name if self.score_player1 > self.score_player2 else self.player2Name
@@ -46,11 +42,8 @@ class TennisGame2:
 
     def current_score(self):
         score_names = ["Love", "Fifteen", "Thirty", "Forty"]
-        score_p1 = score_names[self.score_player1] if self.score_player1 < 4 else "Deuce"
-        score_p2 = score_names[self.score_player2] if self.score_player2 < 4 else "Deuce"
+        score_p1 = score_names[min(self.score_player1, 3)]
+        score_p2 = score_names[min(self.score_player2, 3)]
         if self.score_player1 == self.score_player2:
-            return f"{score_p1}-All" if self.score_player1 < 3 else "Deuce"
+            return f"{score_p1}-All"
         return f"{score_p1}-{score_p2}"
-
-    
-    

@@ -2,14 +2,14 @@ import unittest
 
 from tennis2 import TennisGame2
 #from Tennis2_ameliore_E_G import TennisGame2
-
+from game2 import Game2
 class GoldenMasterTest(unittest.TestCase):
 
     DIR = "/Users/kenzamerzouk/PycharmProjects/Tennis-Refactoring-Kata/golden-master";
 
     @staticmethod
     def play_game(p1Points, p2Points, p1Name, p2Name):
-        game = TennisGame2(p1Name, p2Name)
+        game = Game2(p1Name, p2Name)
         for i in range(max(p1Points, p2Points)):
             if i < p1Points:
                 game.won_point(p1Name)
