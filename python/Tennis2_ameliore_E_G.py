@@ -18,10 +18,8 @@ class TennisGame2:
         else:
             print(" saisissez un nom de player correct")
 
+    
     def score(self):
-      # functional syntax
-        resultat = Enum('resultat', ['Love', 'Fifteen', 'Thirty','Forty','Deuce'])
-        def score(self):
         if self.is_deuce():
             return "Deuce"
         if self.is_advantage():
