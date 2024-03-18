@@ -1,15 +1,19 @@
+import os
 import unittest
 
-from tennis2 import TennisGame2
+#from tennis2 import TennisGame2
 #from Tennis2_ameliore_E_G import TennisGame2
-from game2 import Game2
+#from game2 import Game2
+from lanGame2 import TennisGame2
 class GoldenMasterTest(unittest.TestCase):
 
     DIR = "/Users/kenzamerzouk/PycharmProjects/Tennis-Refactoring-Kata/golden-master";
+    subFR= "/Users/kenzamerzouk/PycharmProjects/Tennis-Refactoring-Kata/golden-master/FR";
+    subEN= "/Users/kenzamerzouk/PycharmProjects/Tennis-Refactoring-Kata/golden-master/EN";
 
     @staticmethod
-    def play_game(p1Points, p2Points, p1Name, p2Name):
-        game = Game2(p1Name, p2Name)
+    def play_game(p1Points, p2Points, p1Name, p2Name, langue):
+        game = TennisGame2(p1Name, p2Name, langue)
         for i in range(max(p1Points, p2Points)):
             if i < p1Points:
                 game.won_point(p1Name)
@@ -17,28 +21,37 @@ class GoldenMasterTest(unittest.TestCase):
                 game.won_point(p2Name)
         return game.score()
 
-    def make_file_name(self, score_player_1, score_player_2):
-        return f"{self.DIR}//{score_player_1}_{score_player_2}.txt"
+    def make_file_name(self, score_player_1, score_player_2, langue):
+        return f"{self.DIR}/{langue}/{score_player_1}_{score_player_2}.txt"
 
     def _test_record(self):
-        for score_player_1 in list(range(0, 16)):
-            for score_player_2 in list(range(0, 16)):
-                with self.subTest(f"{score_player_1}, {score_player_2}"):
-                    sortie = self.play_game(score_player_1, score_player_2, "player1", "player2")
-                    file = open(self.make_file_name(score_player_1, score_player_2), "w")
-                    file.writelines(sortie)
-                    file.close()
+        for langue in ['FR', 'EN']:
+            #rajouter un mkdir qui génerera un dossier s'il existe pas
+            # Créer le sous-dossier correspondant à la langue si nécessaire
+            sub_dir = self.subFR if langue == 'FR' else self.subEN
+            if not os.path.exists(sub_dir):
+                os.makedirs(sub_dir)
+
+            for score_player_1 in range(16):
+                for score_player_2 in range(16):
+                    with self.subTest(f"{score_player_1}, {score_player_2} - {langue}"):
+                        sortie = self.play_game(score_player_1, score_player_2, "player1", "player2", langue)
+                        file = open(self.make_file_name(score_player_1, score_player_2,langue), "w")
+                        file.write(sortie)
+                        file.close()
 
     def test_replay(self):
-        for score_player_1 in list(range(0, 16)):
-            for score_player_2 in list(range(0, 16)):
-                with self.subTest(f"{score_player_1}, {score_player_2}"):
-                    sortie = self.play_game(score_player_1, score_player_2, "player1", "player2")
-                    file = open(self.make_file_name(score_player_1, score_player_2), "r")
-                    attendu = file.read()
-                    file.close()
-                    self.assertEqual(attendu, sortie)
+        for langue in ['FR', 'EN']:
+            # Créer le sous-dossier correspondant à la langue si nécessaire
+            sub_dir = self.subFR if langue == 'FR' else self.subEN
+            if not os.path.exists(sub_dir):
+                os.makedirs(sub_dir)
 
-
-    unittest.main(argv=[''], exit=False)
-
+            for score_player_1 in range(16):
+                for score_player_2 in range(16):
+                    with self.subTest(f"{score_player_1}, {score_player_2} - {langue}"):
+                        file = open(self.make_file_name(score_player_1, score_player_2,langue), "r")
+                        attendu = file.read()
+                        file.close()
+                        sortie = self.play_game(score_player_1, score_player_2, "player1", "player2", langue)
+                        self.assertEqual(attendu, sortie)
