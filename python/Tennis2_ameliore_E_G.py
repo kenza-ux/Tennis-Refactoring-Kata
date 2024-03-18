@@ -20,6 +20,7 @@ class TennisGame2:
 
     
     def score(self):
+
         if self.is_deuce():
             return "Deuce"
         if self.is_advantage():
