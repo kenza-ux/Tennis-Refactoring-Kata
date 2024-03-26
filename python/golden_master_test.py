@@ -1,15 +1,15 @@
 import os
 import unittest
-
+# je dé commente la ligne en dessous quand je veux faire un record de ce que la classe originelle
+# et je commente lanGame2, une fois que c'est fait je recommente et je lance le replay pour comparer les résultats
 #from tennis2 import TennisGame2
-#from Tennis2_ameliore_E_G import TennisGame2
-#from game2 import Game2
 from lanGame2 import TennisGame2
 class GoldenMasterTest(unittest.TestCase):
 
     DIR = "/Users/kenzamerzouk/PycharmProjects/Tennis-Refactoring-Kata/golden-master";
     subFR= "/Users/kenzamerzouk/PycharmProjects/Tennis-Refactoring-Kata/golden-master/FR";
     subEN= "/Users/kenzamerzouk/PycharmProjects/Tennis-Refactoring-Kata/golden-master/EN";
+    #concernant ls stockage de mes résultats de tests, je sépare bien dans des sous dossiers FR et EN
 
     @staticmethod
     def play_game(p1Points, p2Points, p1Name, p2Name, langue):
